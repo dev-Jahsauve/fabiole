@@ -1,6 +1,8 @@
 import { ClipboardList, FileCheck2, Hammer, PackageCheck } from "lucide-react";
+import Image from "next/image";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
+import { asset } from "@/lib/asset";
 
 const STEPS = [
   {
@@ -27,8 +29,17 @@ const STEPS = [
 
 export default function ProcessSteps() {
   return (
-    <section className="bg-charbon-950 py-20 sm:py-24" aria-label="Notre processus de travail">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-charbon-950 py-20 sm:py-24" aria-label="Notre processus de travail">
+      <Image
+        src={asset("/site/panneau-geometrique.jpeg")}
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover opacity-15"
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-charbon-950 via-charbon-950/60 to-charbon-950" aria-hidden="true" />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           dark
           eyebrow="Comment nous travaillons"
