@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── FABIOLE METAL : graphite + rouille, déduits du logo ── */
+  --color-charbon-950: #101418;
+  --color-charbon-900: #1b2127;
+  --color-charbon-800: #242c34;
+  --color-charbon-700: #313b45;
+  --color-charbon-600: #46525e;
+
+  --color-rouille-700: #9c4215;
+  --color-rouille-600: #b34d1a;
+  --color-rouille-500: #c65a21;
+  --color-rouille-400: #d9702f;
+  --color-rouille-100: #f7e2cf;
+
+  --color-sable-50: #faf8f4;
+  --color-sable-100: #f4efe6;
+  --color-sable-200: #e7ddcc;
+
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-sable-50);
+  color: var(--color-charbon-900);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-rouille-500);
+  color: #fff;
+}
+
+/* ── Boutons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  padding: 0.9rem 1.75rem;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-primary {
+  background: var(--color-rouille-500);
+  color: #fff;
+  box-shadow: 0 8px 24px -8px rgba(198, 90, 33, 0.7);
+}
+
+.btn-primary:hover {
+  background: var(--color-rouille-600);
+}
+
+.btn-outline-light {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: #fff;
+}
+
+.btn-outline-light:hover {
+  background: #fff;
+  color: var(--color-charbon-900);
+}
+
+.btn-outline-dark {
+  border: 1px solid var(--color-charbon-900);
+  color: var(--color-charbon-900);
+}
+
+.btn-outline-dark:hover {
+  background: var(--color-charbon-900);
+  color: #fff;
+}
+
+/* ── Reveal au scroll ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Marquee atelier ── */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-x 40s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── Zoom image au survol ── */
+.zoom-frame {
+  overflow: hidden;
+}
+
+.zoom-frame img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zoom-frame:hover img {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+  .zoom-frame:hover img {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
