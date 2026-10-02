@@ -8,6 +8,9 @@ import { FileText, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/config/site";
 import { asset, route } from "@/lib/asset";
 
+// En-tête épuré façon mimfab : logo mis en valeur à gauche,
+// navigation à droite. Aucun bouton ni bloc contact ici —
+// les coordonnées vivent dans le footer et les pages.
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -25,7 +28,7 @@ export default function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open ]);
+  }, [open]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" || pathname === route("/");
@@ -39,13 +42,21 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Navigation principale">
-        <Link href={route("/")} className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="overflow-hidden rounded-sm bg-white px-2 py-1">
-            <Image src={asset("/site/logo.jpeg")} alt="Logo FABIOLE METAL" width={150} height={40} className="h-9 w-auto" priority />
+        {/* Logo mis en valeur : emblème affiché en entier, en grand, pastille blanche */}
+        <Link href={route("/")} className="flex shrink-0 items-center" onClick={() => setOpen(false)} aria-label="FABIOLE METAL — Accueil">
+          <span className="overflow-hidden rounded-lg bg-white p-1 shadow-md ring-1 ring-white/30">
+            <Image
+              src={asset("/site/logo.jpeg")}
+              alt="Logo FABIOLE METAL"
+              width={112}
+              height={112}
+              className="h-12 w-12 rounded-md object-cover sm:h-14 sm:w-14"
+              priority
+            />
           </span>
         </Link>
 
-        {/* Desktop */}
+        {/* Navigation desktop */}
         <ul className="hidden items-center gap-7 lg:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
@@ -63,12 +74,8 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-        <Link href={route("/devis")} className="btn btn-primary hidden !py-3 lg:inline-flex">
-          <FileText size={16} aria-hidden="true" />
-          Demander un devis
-        </Link>
 
-        {/* Mobile toggle */}
+        {/* Toggle mobile */}
         <button
           type="button"
           className="inline-flex h-11 w-11 items-center justify-center text-white lg:hidden"
@@ -82,7 +89,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile panel */}
+      {/* Panneau mobile : liens + bouton devis */}
       <div
         className={`overflow-hidden transition-[max-height,opacity] duration-300 lg:hidden ${
           open ? "max-h-[480px] opacity-100" : "max-h-0 opacity-0"

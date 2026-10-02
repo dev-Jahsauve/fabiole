@@ -8,7 +8,7 @@ Site vitrine professionnel de **FABIOLE METAL**, atelier de fabrication métalli
 - **Next.js 16** (App Router) + React 19 + TypeScript
 - **Tailwind CSS v4** (design system graphite + rouille, déduit du logo)
 - **Export statique** (`output: "export"`) — hébergeable partout sans serveur Node
-- Formulaire de devis via **Formspree** (`https://formspree.io/f/mzebgalz`)
+- Formulaire de devis via **Formspree** (`https://formspree.io/f/xzezqlbv`)
 
 ## Développement local (sans préfixe)
 
@@ -53,6 +53,6 @@ components/           Navbar, Footer, HeroVideo, cartes, filtres, QuoteForm…
 
 ## Coordonnées (centralisées dans `config/site.ts`)
 
-- Tél : +237 698 30 87 80 · WhatsApp : même numéro
-- Email : smartebooksbusiness@gmail.com
+- Tél : +237 678 02 71 16 · WhatsApp : même numéro
+- Email : fabioletsakeutiobo664@gmail.com
 - Atelier : Mairie de Bojongo, Douala – Cameroun

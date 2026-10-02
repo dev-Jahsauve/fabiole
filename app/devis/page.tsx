@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 import ContactCards from "@/components/ContactCards";
 import PageHero from "@/components/PageHero";
@@ -24,7 +25,9 @@ export default function DevisPage() {
       <section className="bg-sable-50 py-16 sm:py-20" aria-label="Formulaire de devis">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
           <Reveal className="lg:col-span-2">
-            <QuoteForm />
+            <Suspense fallback={<p className="bg-white p-10 text-center text-sm text-charbon-600">Chargement du formulaire…</p>}>
+              <QuoteForm />
+            </Suspense>
           </Reveal>
           <Reveal delay={150} className="space-y-5">
             <div className="bg-charbon-950 p-7 text-white">

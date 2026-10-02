@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import CtaDevis from "@/components/CtaDevis";
 import PageHero from "@/components/PageHero";
 import RealisationsGrid from "@/components/RealisationsGrid";
@@ -28,7 +29,9 @@ export default function RealisationsPage() {
             lead="Cliquez sur un projet pour voir ses photos, ses détails et son estimation indicative."
           />
           <div className="mt-10">
-            <RealisationsGrid />
+            <Suspense fallback={<p className="mt-6 text-center text-sm text-charbon-600">Chargement des réalisations…</p>}>
+              <RealisationsGrid />
+            </Suspense>
           </div>
         </div>
       </section>

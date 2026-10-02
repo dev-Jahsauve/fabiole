@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, MessageCircle, Send, TriangleAlert } from "lucide-react";
-import { CONTACT, DEFAULT_WHATSAPP_MESSAGE, FORMSPREE_ENDPOINT, whatsappLink } from "@/config/site";
+import { CONTACT, FORMSPREE_ENDPOINT, whatsappLink } from "@/config/site";
 import { getRealisation } from "@/data/realisations";
 import { SERVICES, getService } from "@/data/services";
 import { route } from "@/lib/asset";
@@ -56,41 +57,45 @@ const EMPTY: FormState = {
 const inputCls =
   "w-full border border-charbon-900/20 bg-white px-4 py-3 text-sm text-charbon-900 placeholder:text-charbon-600/50 outline-none transition-colors focus:border-rouille-500 focus:ring-2 focus:ring-rouille-500/20";
 
+// Préremplissage pur depuis les paramètres d'URL (?service=slug, ?projet=slug).
+// Fonction pure appelée une seule fois dans l'initialiseur d'état : aucun effet,
+// donc aucun rendu en cascade — et compatible export statique via Suspense.
+function prefillFromParams(params: { get: (key: string) => string | null }): {
+  partial: Partial<FormState>;
+  note: string | null;
+} {
+  const serviceParam = params.get("service");
+  const projetParam = params.get("projet");
+  const partial: Partial<FormState> = {};
+  const notes: string[] = [];
+
+  if (serviceParam) {
+    const found = getService(serviceParam) ?? SERVICES.find((s) => s.title.toLowerCase() === serviceParam.toLowerCase());
+    if (found) {
+      partial.service = found.slug;
+      notes.push(`Service présélectionné : ${found.title}.`);
+    }
+  }
+  if (projetParam) {
+    const ref = getRealisation(projetParam);
+    if (ref) {
+      partial.service = partial.service ?? CATEGORY_TO_SERVICE[ref.category] ?? "";
+      partial.message = `Projet de référence : ${ref.title}. Je souhaite un ouvrage similaire.`;
+      notes.push(`Basé sur la réalisation « ${ref.title} ».`);
+    }
+  }
+  return { partial, note: notes.length > 0 ? notes.join(" ") : null };
+}
+
 // Formulaire de devis : envoi réel vers Formspree, préremplissage via
 // ?service=slug et ?projet=slug, validation complète, états succès/erreur.
 export default function QuoteForm() {
-  const [form, setForm] = useState<FormState>(EMPTY);
+  const searchParams = useSearchParams();
+  const [prefill] = useState(() => prefillFromParams(searchParams));
+  const [form, setForm] = useState<FormState>({ ...EMPTY, ...prefill.partial });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [prefilledNote, setPrefilledNote] = useState<string | null>(null);
-
-  // Préremplissage depuis l'URL (100% client, compatible export statique).
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const serviceParam = params.get("service");
-    const projetParam = params.get("projet");
-    let next: Partial<FormState> = {};
-    const notes: string[] = [];
-
-    if (serviceParam) {
-      const found = getService(serviceParam) ?? SERVICES.find((s) => s.title.toLowerCase() === serviceParam.toLowerCase());
-      if (found) {
-        next.service = found.slug;
-        notes.push(`Service présélectionné : ${found.title}.`);
-      }
-    }
-    if (projetParam) {
-      const ref = getRealisation(projetParam);
-      if (ref) {
-        next = { ...next, service: next.service ?? CATEGORY_TO_SERVICE[ref.category] ?? "", message: `Projet de référence : ${ref.title}. Je souhaite un ouvrage similaire.` };
-        notes.push(`Basé sur la réalisation « ${ref.title} ».`);
-      }
-    }
-    if (Object.keys(next).length > 0) {
-      setForm((f) => ({ ...f, ...next }));
-      setPrefilledNote(notes.join(" "));
-    }
-  }, []);
+  const [prefilledNote] = useState<string | null>(prefill.note);
 
   const set = (key: keyof FormState, value: string | boolean) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -125,6 +130,7 @@ export default function QuoteForm() {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           _subject: `Demande de devis — ${form.name} (${form.projectType})`,
+          _replyto: form.email,
           ...form,
           serviceLabel: getService(form.service)?.title ?? form.service,
         }),
@@ -182,7 +188,7 @@ export default function QuoteForm() {
         {field("Nom complet", true, errors.name,
           <input className={inputCls} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Ex. : Amina N." autoComplete="name" />)}
         {field("Téléphone", true, errors.phone,
-          <input className={inputCls} value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="Ex. : 698 30 87 80" inputMode="tel" autoComplete="tel" />)}
+          <input className={inputCls} value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="Ex. : 678 02 71 16" inputMode="tel" autoComplete="tel" />)}
         {field("Email", true, errors.email,
           <input className={inputCls} type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="vous@exemple.com" autoComplete="email" />)}
         {field("Ville / localisation", true, errors.city,

@@ -11,13 +11,13 @@ export const COMPANY = {
   country: "Cameroun",
 } as const;
 
-// Téléphone officiel transmis par le client (oct. 2026).
+// Téléphone officiel transmis par le client.
 // WhatsApp : même numéro sauf indication contraire (facilement modifiable ici).
 export const CONTACT = {
-  phoneDisplay: "+237 698 30 87 80",
-  phoneHref: "tel:+237698308780",
-  whatsappNumber: "237698308780",
-  email: "smartebooksbusiness@gmail.com",
+  phoneDisplay: "+237 678 02 71 16",
+  phoneHref: "tel:+237678027116",
+  whatsappNumber: "237678027116",
+  email: "fabioletsakeutiobo664@gmail.com",
   // Localisation transmise : « à la mairie de Bojongo ».
   address: "Mairie de Bojongo, Douala – Cameroun",
   addressShort: "Bojongo, Douala",
@@ -32,7 +32,7 @@ export function whatsappLink(message: string): string {
 export const DEFAULT_WHATSAPP_MESSAGE =
   "Bonjour FABIOLE METAL, je souhaite discuter d'un projet métallique.";
 
-export const FORMSPREE_ENDPOINT = "https://formspree.io/f/mzebgalz";
+export const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzezqlbv";
 
 export const SITE_URL = "https://dev-jahsauve.github.io/fabiole";
 

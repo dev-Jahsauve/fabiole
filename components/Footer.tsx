@@ -10,8 +10,18 @@ export default function Footer() {
     <footer className="bg-charbon-950 text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
         <div>
-          <span className="inline-block overflow-hidden rounded-sm bg-white px-2 py-1">
-            <Image src={asset("/site/logo.jpeg")} alt="Logo FABIOLE METAL" width={170} height={46} className="h-11 w-auto" loading="lazy" />
+          <span className="inline-flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-md bg-white shadow-md ring-1 ring-white/20">
+              <Image src={asset("/site/logo.jpeg")} alt="Logo FABIOLE METAL" width={96} height={96} className="h-full w-full origin-top scale-[1.62] object-cover object-top" loading="lazy" />
+            </span>
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-base font-bold uppercase tracking-wide text-white">
+                Fabiole <span className="text-rouille-400">Metal</span>
+              </span>
+              <span className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-white/55">
+                Métallurgie de précision
+              </span>
+            </span>
           </span>
           <p className="mt-4 text-sm leading-relaxed">{COMPANY.description}</p>
           <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-rouille-400">{COMPANY.baseline}</p>

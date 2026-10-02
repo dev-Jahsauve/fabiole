@@ -1,30 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/data/realisations";
 
 interface CategoryFilterProps {
   counts: Record<string, number>;
+  value: string;
   onChange: (category: string) => void;
 }
 
-// Filtres synchronisés avec ?categorie= (lecture au chargement + historique).
-// Fonctionne en 100% statique, sans navigation serveur.
-export default function CategoryFilter({ counts, onChange }: CategoryFilterProps) {
-  const [active, setActive] = useState<string>("toutes");
+// Valide ?categorie= : toute valeur inconnue retombe sur "toutes".
+// Exportée pour que la grille parente initialise son état avec la même règle.
+export function resolveCategoryParam(value: string | null): string {
+  if (value && (CATEGORIES.some((c) => c.key === value) || value === "toutes")) return value;
+  return "toutes";
+}
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const initial = params.get("categorie");
-    if (initial && (CATEGORIES.some((c) => c.key === initial) || initial === "toutes")) {
-      setActive(initial);
-      onChange(initial);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+// Filtres contrôlés : l'état vit dans la grille parente (source unique de
+// vérité), ce composant affiche et notifie — aucune lecture d'URL ici,
+// donc aucun effet et aucun risque de rendus en cascade.
+export default function CategoryFilter({ counts, value, onChange }: CategoryFilterProps) {
   const select = (key: string) => {
-    setActive(key);
     onChange(key);
     const url = new URL(window.location.href);
     if (key === "toutes") url.searchParams.delete("categorie");
@@ -36,7 +31,7 @@ export default function CategoryFilter({ counts, onChange }: CategoryFilterProps
     <div className="flex flex-wrap justify-center gap-2.5" role="group" aria-label="Filtrer par catégorie">
       {CATEGORIES.map((cat) => {
         const count = cat.key === "toutes" ? Object.values(counts).reduce((a, b) => a + b, 0) : counts[cat.key] ?? 0;
-        const isActive = active === cat.key;
+        const isActive = value === cat.key;
         return (
           <button
             key={cat.key}
