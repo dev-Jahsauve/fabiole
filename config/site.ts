@@ -32,7 +32,7 @@ export function whatsappLink(message: string): string {
 export const DEFAULT_WHATSAPP_MESSAGE =
   "Bonjour FABIOLE METAL, je souhaite discuter d'un projet métallique.";
 
-export const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzezqlbv";
+export const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjygkkje";
 
 export const SITE_URL = "https://dev-jahsauve.github.io/fabiole";
 

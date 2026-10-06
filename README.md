@@ -8,7 +8,7 @@ Site vitrine professionnel de **FABIOLE METAL**, atelier de fabrication métalli
 - **Next.js 16** (App Router) + React 19 + TypeScript
 - **Tailwind CSS v4** (design system graphite + rouille, déduit du logo)
 - **Export statique** (`output: "export"`) — hébergeable partout sans serveur Node
-- Formulaire de devis via **Formspree** (`https://formspree.io/f/xzezqlbv`)
+- Formulaire de devis via **Formspree** (`https://formspree.io/f/mjygkkje`)
 
 ## Développement local (sans préfixe)
 
